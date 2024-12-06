@@ -1,7 +1,7 @@
 
 # Sprint 1: EPIC: 1. Datenerfassung und -speicherung (csv → sql3Lite)
 Workspace aufbauen
-
+0 Vorausetzungen os: Python 3.10.6, git
 1.) Projekt von Git clonen
 2.) .venv erstellen: python -m venv .\.venv   
 3.) venv aktivieren: .venv/scripts/activate   
