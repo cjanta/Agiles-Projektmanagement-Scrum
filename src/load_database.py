@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd 
 from database import get_session, PriceData
 import os
 from datetime import datetime
@@ -35,6 +35,7 @@ def insert_data(df):
             
             # Erstelle PriceData Objekte für den Batch
             price_data_objects = []
+            
             for _, row in batch.iterrows():
                 price_data = PriceData(
                     timestamp=row['timestamp'],
