@@ -1,90 +1,87 @@
 import pandas as pd
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
-from database import Base, PriceData
+from database import get_session, PriceData
 import os
+from datetime import datetime
 
-def load_csv_to_database(csv_path):
+def load_csv_data(file_path):
+    """Lade und bereinige CSV-Daten"""
     try:
-        # CSV-Datei laden
-        print(f"Lade CSV-Datei von: {csv_path}")
-        df = pd.read_csv(csv_path)
-        print(f"Anzahl der geladenen Datensätze: {len(df)}")
-
-        # Timestamp konvertieren und ungültige Timestamps entfernen
-        print("Bereinige Timestamps...")
-        df['Timestamp'] = pd.to_datetime(df['Timestamp'], unit='s', errors='coerce')
-        df = df.dropna(subset=['Timestamp'])  # Entferne Zeilen mit ungültigen Timestamps
-
-        # Datenbankverbindung herstellen
-        db_path = os.path.join(os.path.dirname(__file__), '..', 'crypto_data.db')
-        engine = create_engine(f'sqlite:///{db_path}')
-        Base.metadata.create_all(engine)
-
-        # Session erstellen
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
-        try:
-            # Bestehende Daten löschen
-            print("Lösche alte Daten...")
-            session.query(PriceData).delete()
-            session.commit()
-
-            # Neue Daten einfügen
-            print("Füge neue Daten ein...")
-            batch_size = 1000  # Kleinere Batch-Größe für bessere Performance
-            total_rows = len(df)
-            count = 0
-
-            for index, row in df.iterrows():
-                price_data = PriceData(
-                    timestamp=row['Timestamp'],
-                    open=float(row['Open']),
-                    high=float(row['High']),
-                    low=float(row['Low']),
-                    close=float(row['Close']),
-                    volume=float(row['Volume'])
-                )
-                session.add(price_data)
-                count += 1
-
-                # Batch-Commit für bessere Performance
-                if count % batch_size == 0:
-                    session.commit()
-                    print(f"Fortschritt: {count}/{total_rows} Datensätze verarbeitet ({(count/total_rows*100):.2f}%)")
-
-            # Restliche Daten committen
-            session.commit()
-            print(f"\nFertig! {count} Datensätze wurden in die Datenbank geschrieben.")
-
-            # Überprüfung
-            data_count = session.query(PriceData).count()
-            print(f"\nAnzahl der Datensätze in der Datenbank: {data_count}")
-
-            # Beispieldaten anzeigen
-            print("\nErste 5 Einträge in der Datenbank:")
-            first_entries = session.query(PriceData).limit(5).all()
-            for entry in first_entries:
-                print(f"Timestamp: {entry.timestamp}, Close: ${entry.close:.2f}")
-
-        except Exception as e:
-            print(f"Fehler beim Schreiben in die Datenbank: {e}")
-            session.rollback()
-            raise
-        finally:
-            session.close()
-
+        # Lade CSV-Daten
+        df = pd.read_csv(file_path)
+        
+        # Konvertiere Spaltennamen zu Kleinbuchstaben
+        df.columns = df.columns.str.lower()
+        
+        # Konvertiere Timestamp
+        df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
+        
+        # Entferne NaN-Werte
+        df = df.dropna()
+        
+        return df
     except Exception as e:
-        print(f"Fehler beim Laden der Daten: {e}")
-        raise
+        print(f"Fehler beim Laden der CSV-Datei: {e}")
+        return None
+
+def insert_data(df):
+    """Füge Daten in die Datenbank ein"""
+    session = get_session()
+    
+    try:
+        # Batch-Insert für bessere Performance
+        batch_size = 1000
+        for i in range(0, len(df), batch_size):
+            batch = df.iloc[i:i+batch_size]
+            
+            # Erstelle PriceData Objekte für den Batch
+            price_data_objects = []
+            for _, row in batch.iterrows():
+                price_data = PriceData(
+                    timestamp=row['timestamp'],
+                    open=row['open'],
+                    high=row['high'],
+                    low=row['low'],
+                    close=row['close'],
+                    volume=row['volume']
+                )
+                price_data_objects.append(price_data)
+            
+            # Füge Batch in die Datenbank ein
+            session.bulk_save_objects(price_data_objects)
+            session.commit()
+            
+            print(f"Batch {i//batch_size + 1} verarbeitet: {i+len(batch)}/{len(df)} Einträge")
+            
+    except Exception as e:
+        print(f"Fehler beim Einfügen der Daten: {e}")
+        session.rollback()
+    finally:
+        session.close()
+
+def main():
+    # Definiere Dateipfad
+    data_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
+    file_path = os.path.join(data_dir, 'btcusd_1-min_data.csv')
+    
+    # Stelle sicher, dass das Datenverzeichnis existiert
+    os.makedirs(data_dir, exist_ok=True)
+    
+    # Prüfe ob die Datei existiert
+    if not os.path.exists(file_path):
+        print(f"Datei nicht gefunden: {file_path}")
+        return
+    
+    # Lade und verarbeite Daten
+    print("Lade CSV-Daten...")
+    df = load_csv_data(file_path)
+    
+    if df is not None:
+        print(f"CSV-Daten erfolgreich geladen. {len(df)} Einträge gefunden.")
+        print("Beginne mit dem Einfügen in die Datenbank...")
+        insert_data(df)
+        print("Datenbankimport abgeschlossen!")
+    else:
+        print("Fehler beim Laden der CSV-Daten.")
 
 if __name__ == "__main__":
-    # Pfad zur CSV-Datei
-    csv_path = os.path.join(os.path.dirname(__file__), '..', 'btcusd_1-min_data.csv')
-    
-    if not os.path.exists(csv_path):
-        print(f"Fehler: CSV-Datei nicht gefunden unter {csv_path}")
-        print("Bitte stellen Sie sicher, dass die Datei 'btcusd_1-min_data.csv' im richtigen Verzeichnis liegt.")
-    else:
-        load_csv_to_database(csv_path)
+    main()
