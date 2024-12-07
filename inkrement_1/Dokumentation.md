@@ -1,4 +1,4 @@
-
+### Ziel: Grundlegende Dateninfrastruktur aufbauen
 # Sprint 1: EPIC: 1. Datenerfassung und -speicherung 
 
 ## Installation
@@ -23,16 +23,16 @@ Datenbank, crypto_data.db, sollte nun mit den Daten der csv befüllt worden sein
 1. Als Entwickler möchte ich CSV-Daten von BTC/Dollar-Kursen abrufen können
    - Priorität: Hoch
    - Akzeptanzkriterien:
-     * ~~API-Verbindung funktioniert~~
-     * [erledigt] CSV import funktioniert
-     * [erledigt]Daten werden im korrekten Format empfangen
-     * [erledigt]Fehlerbehandlung implementiert
+     * [**ungetestet**, data_collector.py] API-Verbindung funktioniert
+     * [**erledigt**, load_database.py] CSV import funktioniert
+     * [**erledigt**, database.py]Daten werden im korrekten Format empfangen
+     * [**erledigt**]Fehlerbehandlung implementiert
 
 2. Als Entwickler möchte ich die Daten in einer Datenbank speichern
    - Priorität: Hoch
    - Akzeptanzkriterien:
-     * [erledigt] Datenbankschema erstellt
-     * [teilweise] CRUD-Operationen(create,read,update,delete) implementiert
-     * [erledigt] Datenintegrität gewährleistet
+     * [**erledigt**, database.py] Datenbankschema erstellt
+     * [**teilweise**, load_database.py] CRUD-Operationen(create,read,update,delete) implementiert
+     * [**erledigt**, gebatchter, transaktioneller db import] Datenintegrität gewährleistet
 
     
