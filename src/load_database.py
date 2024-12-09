@@ -42,11 +42,8 @@ def insert_data(df):
             batch = df.iloc[i:i+batch_size]
             
             # Erstelle PriceData Objekte für den Batch
-<<<<<<< HEAD
-=======
             price_data_objects = []
             
->>>>>>> 6743f6e316223b472d306e714a4f8d6c42a53f14
             for _, row in batch.iterrows():
                 # Prüfe ob der Eintrag bereits existiert
                 exists_query = session.query(exists().where(
