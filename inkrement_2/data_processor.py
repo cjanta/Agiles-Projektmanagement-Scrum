@@ -157,14 +157,14 @@ def test_range_from_to():
 def test_range_from_to_with_limit(limit):   
     start_timestamp = '2016-01-31 00:00:00'
     end_timestamp = '2016-01-31 23:59:59'
-    print("Test von-bis, letzter gefundener Datensatz wird ausgewertet")
+    print(f"Test von-bis, letzter gefundener Datensatz wird ausgewertet, limit {limit}")
     print("Suche: Startzeitpunkt", start_timestamp)
     print("Suche: Endzeitpunkt", end_timestamp)
     print("Suche im Zeitraum nach dem letzten Eintrag in der Datenbank...")
     return processor.get_price_data_in_range(start_timestamp, end_timestamp, limit)
 
 def test_random(limit=1000):
-    print("\nEs wird vom frühstmöglichen Eintrag in der Datenbank,\nzu einem zufälligen Eintrag, der letzte Zeitpunkt ausgewertet")
+    print(f"\nEs wird vom frühstmöglichen Eintrag in der Datenbank,\nzu einem zufälligen Eintrag, der letzte Zeitpunkt ausgewertet, limit {limit}")
     return processor.get_price_data_random(limit)
 
 def test_from_limit(limit=None):
@@ -190,7 +190,7 @@ if __name__ == "__main__":
         print("\nGeneriere Trading-Signal zum letzten Zeitpunkt...")
         signal_data = processor.generate_signals(df_with_indicators)
         
-        print("\nTrading-Signal:")
+        print("\nTrading-Signal:\n")
         print(f"Zeitpunkt: {signal_data['timestamp']}")
         print(f"Signal: {signal_data['signal'].upper()}")
         print("\nMarktbedingungen:")
