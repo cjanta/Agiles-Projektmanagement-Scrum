@@ -1,11 +1,13 @@
-# Sprint
+# Letzter Sprint
+## Product Vision
+Entwicklung eines automatisierten Handelssystems für Kryptowährungen mit Datenbankanbindung und API-Integration.
 ### Ziel: Trading Bot Grundfunktionen
 
 #### Sprint Backlog
 1. Bot-Kernfunktionen
-   - Order-Logik implementieren
-   - Exchanger-API anbinden
-   - Sicherheitsmechanismen
+   - Order-Logik Simulation implementieren
+   - ~Exchanger-API anbinden~
+   - ~Sicherheitsmechanismen~
 
 2. Testing und Optimierung
    - Umfangreiche Tests
@@ -28,10 +30,10 @@
   * Was kann verbessert werden?
   * Welche Maßnahmen leiten wir ab?
 
-# Epic 3: Trading Bot
+# Epic 3: Trading Bot und Handelssystem
 4. Als Benutzer möchte ich automatisierte Trades basierend auf erkannten Mustern ausführen
    - Priorität: Mittel
    - Akzeptanzkriterien:
-     * [TODO] Automatische Order-Ausführung
-     * [TODO] Risikomanagement-Regeln implementiert
+     * [TODO] Automatische Order-Ausführung (Bots/Agenten)
+     * [TODO] Handelsystem welches Bots aktiviert
      * [TODO] Logging aller Transaktionen
