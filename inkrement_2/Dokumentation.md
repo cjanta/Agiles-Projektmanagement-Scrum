@@ -1,3 +1,4 @@
+# Sprint 2
 ### Ziel: Mustererkennungssystem entwickeln
 
 ### Sprint Backlog
@@ -24,6 +25,6 @@
 3. Als Analyst möchte ich Trading-Muster in den Daten erkennen
    - Priorität: Mittel
    - Akzeptanzkriterien:
-     * [TODO]Algorithmus erkennt definierte Muster
-     * [TODO]Performance-Metriken implementiert
-     * [TODO]Visualisierung der Ergebnisse
+     * [TODO] Algorithmus erkennt definierte Muster
+     * [TODO] Performance-Metriken implementiert
+     * [TODO] Visualisierung der Ergebnisse
