@@ -5,11 +5,13 @@
 Vorausetzungen os: Python 3.10.6, git
 
 
-csv von kaggle: **pip install kaggle** 
+1. csv von kaggle herunterladen
+2. .venv erstellen: python -m venv .\.venv   
+3. venv aktivieren: .venv/scripts/activate 
+4. **pip install kaggle** 
 
 
-im Terminal zum Download: **kaggle datasets download -d mczielinski/bitcoin-historical-data**
-
+danach im Terminal zum Download: **kaggle datasets download -d mczielinski/bitcoin-historical-data**
 
 
 1. Projekt von Git clonen
@@ -33,8 +35,8 @@ Datenbank, crypto_data.db, sollte nun mit den Daten der csv befüllt worden sein
    - Akzeptanzkriterien:
      * [**ungetestet**, data_collector.py] API-Verbindung funktioniert
      * [**erledigt**, load_database.py] CSV import funktioniert
-     * [**erledigt**, database.py]Daten werden im korrekten Format empfangen
-     * [**erledigt**]Fehlerbehandlung implementiert
+     * [**erledigt**, database.py] Daten werden im korrekten Format empfangen
+     * [**erledigt**], Fehlerbehandlung implementiert
 
 2. Als Entwickler möchte ich die Daten in einer Datenbank speichern
    - Priorität: Hoch
