@@ -2,8 +2,6 @@ import pandas as pd
 from database import get_session, PriceData
 import os
 from datetime import datetime
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import exists
 
 def load_csv_data(file_path):
     """Lade und bereinige CSV-Daten"""
@@ -20,64 +18,40 @@ def load_csv_data(file_path):
         # Entferne NaN-Werte
         df = df.dropna()
         
-        # Sortiere nach Timestamp
-        df = df.sort_values('timestamp')
-        
         return df
     except Exception as e:
         print(f"Fehler beim Laden der CSV-Datei: {e}")
         return None
 
 def insert_data(df):
-    """Füge Daten in die Datenbank ein und überspringe existierende Einträge"""
+    """Füge Daten in die Datenbank ein"""
     session = get_session()
     
     try:
         # Batch-Insert für bessere Performance
         batch_size = 1000
-        total_processed = 0
-        duplicates = 0
-        
         for i in range(0, len(df), batch_size):
             batch = df.iloc[i:i+batch_size]
             
             # Erstelle PriceData Objekte für den Batch
-<<<<<<< HEAD
-=======
             price_data_objects = []
             
->>>>>>> 6743f6e316223b472d306e714a4f8d6c42a53f14
             for _, row in batch.iterrows():
-                # Prüfe ob der Eintrag bereits existiert
-                exists_query = session.query(exists().where(
-                    PriceData.timestamp == row['timestamp']
-                )).scalar()
-                
-                if not exists_query:
-                    price_data = PriceData(
-                        timestamp=row['timestamp'],
-                        open=row['open'],
-                        high=row['high'],
-                        low=row['low'],
-                        close=row['close'],
-                        volume=row['volume']
-                    )
-                    session.add(price_data)
-                    total_processed += 1
-                else:
-                    duplicates += 1
+                price_data = PriceData(
+                    timestamp=row['timestamp'],
+                    open=row['open'],
+                    high=row['high'],
+                    low=row['low'],
+                    close=row['close'],
+                    volume=row['volume']
+                )
+                price_data_objects.append(price_data)
             
-            # Commit nach jedem Batch
-            try:
-                session.commit()
-                print(f"Batch verarbeitet: {i+len(batch)}/{len(df)} Einträge")
-            except IntegrityError:
-                session.rollback()
-                print("Fehler: Doppelte Einträge übersprungen")
+            # Füge Batch in die Datenbank ein
+            session.bulk_save_objects(price_data_objects)
+            session.commit()
             
-        print(f"\nVerarbeitung abgeschlossen:")
-        print(f"Neue Einträge: {total_processed}")
-        print(f"Übersprungene Duplikate: {duplicates}")
+            print(f"Batch {i//batch_size + 1} verarbeitet: {i+len(batch)}/{len(df)} Einträge")
             
     except Exception as e:
         print(f"Fehler beim Einfügen der Daten: {e}")
