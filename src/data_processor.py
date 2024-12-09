@@ -4,6 +4,10 @@ from database import get_session, PriceData
 from sqlalchemy import select
 import ta
 
+
+# Vor dem ausführen des Codes: pip install ta
+
+
 class DataProcessor:
     def __init__(self):
         self.session = get_session()
