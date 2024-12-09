@@ -80,7 +80,7 @@ class DataProcessor:
                 'macd': 'bullish' if latest['macd'] > latest['macd_signal'] else 'bearish'
             },
             'volatility': {
-                'bb_position': (latest['close'] - latest['bb_low']) / (latest['bb_high'] - latest['bb_low']),
+                'bb_position': 'div zero' if (latest['bb_high'] - latest['bb_low']) == 0 else (latest['close'] - latest['bb_low']) / (latest['bb_high'] - latest['bb_low']),
                 'atr': latest['atr']
             }
         }
@@ -144,6 +144,6 @@ if __name__ == "__main__":
         for category, data in signal_data['conditions'].items():
             print(f"\n{category.capitalize()}:")
             for key, value in data.items():
-                print(f"  {key}: {value}")
+                print(f"{key}: {value}")
     else:
         print("Keine Daten in der Datenbank gefunden.")

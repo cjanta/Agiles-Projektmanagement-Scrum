@@ -15,7 +15,7 @@ Vorausetzungen os: Python 3.10.6, git
 10. pip install numpy==1.24.3
 11. pip install pytest==7.4.2
 12. **pip install ta**
-12. ausführen von: ldata_processor.py
+12. ausführen von: data_processor.py
 
 ### Ziel: Mustererkennungssystem entwickeln
 
@@ -23,11 +23,12 @@ Vorausetzungen os: Python 3.10.6, git
 1. Basis-Algorithmus entwickeln
    + Muster definieren
    + Erkennungslogik implementieren
-   - Test-Framework aufsetzen
+   - ~Test-Framework aufsetzen~
+   + manuelle Tests (data_processor.py)
 
 2. Erste Optimierungen
-   - Performance-Verbesserungen
-   - Fehlertoleranz erhöhen
+   + Performance-Verbesserungen
+   + Fehlertoleranz erhöhen
 
 ### Dailies
 - Täglich 15 Minuten
@@ -45,4 +46,4 @@ Vorausetzungen os: Python 3.10.6, git
    - Akzeptanzkriterien:
      * [erledigt] Algorithmus erkennt definierte Muster = data.processor.py
      * [erledigt] Performance-Metriken implementiert = Trend, Volatilität, Momentum
-     * [erledigt] Visualisierung der Ergebnisse = Terminal ausgabe
+     * [erledigt] Visualisierung der Ergebnisse = Terminal-Ausgabe
