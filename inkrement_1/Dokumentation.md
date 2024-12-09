@@ -4,6 +4,14 @@
 ## Installation
 Vorausetzungen os: Python 3.10.6, git
 
+
+csv von kaggle: **pip install kaggle** 
+
+
+im Terminal zum Download: **kaggle datasets download -d mczielinski/bitcoin-historical-data**
+
+
+
 1. Projekt von Git clonen
 2. .venv erstellen: python -m venv .\.venv   
 3. venv aktivieren: .venv/scripts/activate   
