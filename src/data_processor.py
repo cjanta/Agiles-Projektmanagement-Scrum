@@ -61,7 +61,7 @@ class DataProcessor:
 
         # ATR (Average True Range)
         df['atr'] = ta.volatility.AverageTrueRange(df['high'], df['low'], df['close']).average_true_range()
-
+    
         return df
 
     def analyze_market_conditions(self, df):
