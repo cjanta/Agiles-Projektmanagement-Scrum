@@ -124,7 +124,7 @@ if __name__ == "__main__":
     
     # Lade die letzten 1000 Datenpunkte
     print("Lade Daten aus der Datenbank...")
-    df = processor.get_price_data(limit=11000)
+    df = processor.get_price_data(limit=1000)
     
     if not df.empty:
         print(f"Daten geladen. Anzahl der Datenpunkte: {len(df)}")
