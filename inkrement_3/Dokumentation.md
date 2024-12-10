@@ -5,6 +5,7 @@ Entwicklung eines automatisierten Handelssystems für Kryptowährungen mit Daten
 ## Installation
 
 Vorausetzungen os: Python ab 3.10.6, git
+Empfohlen mit: VS-Code zu betreiben
 
 1. Projekt von Git clonen
 2. .venv erstellen: python -m venv .\.venv   
