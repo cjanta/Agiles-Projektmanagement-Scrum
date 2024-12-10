@@ -1,6 +1,6 @@
+import pandas as pd
 from database import get_session, PriceData
 from sqlalchemy import select
-import pandas as pd
 from datetime import datetime
 
 class SimpleTrader:
@@ -69,7 +69,7 @@ class SimpleTrader:
             if self.bought_price is None:
                 # Kaufbedingung: Preis fällt um %
                 if (min(current['open'], current['high'], 
-                       current['low'], current['close']) <= 0.99 * previous['close']):
+                       current['low'], current['close']) <= 0.97 * previous['close']):
                     self.bought_price = min(current['open'], current['high'],
                                           current['low'], current['close'])
                     btc_amount = self.execute_trade(self.bought_price, True, current['timestamp'])
@@ -78,10 +78,10 @@ class SimpleTrader:
                     print(f"Investment: ${investment:.2f}, BTC Menge: {btc_amount:.8f}")
             else:
                 # Verkaufsbedingungen
-                if current['high'] >= 1.01 * self.bought_price:  # % Gewinn
+                if current['high'] >= 1.10 * self.bought_price:  # % Gewinn
                     sell_price = current['high']
                     profit = self.execute_trade(sell_price, False, current['timestamp'])
-                    #self.total_profit += profit
+                    self.total_profit += profit
                     self.wins += 1
                     self.trades_history.append({
                         'type': 'win',
@@ -95,7 +95,7 @@ class SimpleTrader:
                 elif current['low'] <= 0.95 * self.bought_price:  # 5% Verlust (engerer Stop-Loss)
                     sell_price = current['low']
                     loss = self.execute_trade(sell_price, False, current['timestamp'])
-                    #self.total_profit += loss
+                    self.total_profit += loss
                     self.losses += 1
                     self.trades_history.append({
                         'type': 'loss',
@@ -111,7 +111,7 @@ class SimpleTrader:
         print("\nTrading-Ergebnisse:")
         print(f"Startkapital: ${self.initial_investment:.2f}")
         print(f"Endkapital: ${self.current_balance:.2f}")
-        # print(f"Gesamtgewinn/-verlust: ${self.total_profit:.2f}")
+        print(f"Gesamtgewinn/-verlust: ${self.total_profit:.2f}")
         print(f"Rendite: {((self.current_balance/self.initial_investment)-1)*100:.2f}%")
         print(f"\nAnzahl Trades:")
         print(f"Gewinne: {self.wins}")
