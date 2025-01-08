@@ -139,8 +139,8 @@ if __name__ == "__main__":
     trader = SimpleTrader()
     
     # Definiere Zeitraum (2012-2013 für Testdaten)
-    start_date = datetime(2015, 1, 1)
-    end_date = datetime(2015, 12, 31)
+    start_date = datetime(2024, 1, 1)
+    end_date = datetime(2024, 12, 31)
     
     print(f"Starte Trading-Simulation von {start_date} bis {end_date}")
     print("Analisiere Daten. Bitte Warten.")
